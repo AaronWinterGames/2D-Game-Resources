@@ -4,29 +4,27 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed= 5f;
+    public float moveSpeed= 5f;                                                         //Variable that stores the players move
+    public Rigidbody2D rb;                                                              //Acquires the players Rigidbody component
+    public Camera cam;                                                                  //Accquires the camera
+    Vector2 movement;                                                                   //Sets a vector2 variable for the movement
+    Vector2 mousePos;                                                                   //Sets a vector2 variable for the mouse position
 
-    public Rigidbody2D rb;
-    public Camera cam;                                                    
-
-    Vector2 movement;
-    Vector2 mousePos;
-
-    void Update()
+    void Update()                                                                       //Calls every frame during runtime
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        movement.x = Input.GetAxisRaw("Horizontal");                                    //Sets movement on the X Axis to the horizontal controls
+        movement.y = Input.GetAxisRaw("Vertical");                                      //Sets movement on the Y Axis to the vertical controls
 
-        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);                                                                               
+        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);                         //Sets the mouse position variable to the actual mouse position                                                       
     }
 
-    void FixedUpdate()
+    void FixedUpdate()                                                                  //Calls every interval that can be set in the project settings (Leave interval as default)
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);      //Makes player move at set speed towards the mouse
 
-        Vector2 lookDir = mousePos - rb.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        Vector2 lookDir = mousePos - rb.position;                                       //Sets the look direction
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;          //Sets angle at which the player is facing
 
-        rb.rotation = angle;
+        rb.rotation = angle;                                                            //Sets the rigidbodies rotation as the angle 
     }
 }
