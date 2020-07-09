@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public float moveSpeed = 5f;                                                                                //Sets variable that stores players movement speed
+    public bool isGrounded = false;                                                                             //Sets bool that stores if the player is touching the ground
+    public float jumpHeight = 10f;                                                                              //Stes variable that stores how high the player can jump
+
+    void Update()                                                                                               //Calls every frame during runtime
+    {
+        Jump();                                                                                                 //Starts Jump function
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);                                    //Moves player on horizontal axis using horizontal controls
+        transform.position += movement * Time.deltaTime * moveSpeed;                                            //Makes player move at set speed
+    }
+
+    void Jump()                                                                                                 //Jump function that was called previously
+    {
+        if (Input.GetButtonDown("Jump") && isGrounded == true)                                                  //If the player is pressing jump key and is touching the ground
+        {
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);  //Adds upward force which the rigidbody brings back down
+        }            
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)                                                              //If the players collider hits another
+    {
+        if (collision.collider.tag == "Ground")                                                                 //If the collider that the player hits has the tag "Ground"
+        {
+            isGrounded = true;                                                                                  //Sets the variable that tracks if the player is touching the ground to true
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)                                                               //If the players collider leaves another
+    {
+        if (collision.collider.tag == "Ground")                                                                 //If the collider that the player leaves has the tag "Ground"
+        {
+            isGrounded = false;                                                                                 //Sets the variable that tracks if the player is touching the ground to true
+        }
+    }
+}
